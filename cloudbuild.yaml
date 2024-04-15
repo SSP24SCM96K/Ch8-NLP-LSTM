@@ -1,0 +1,13 @@
+steps: 
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/ch8-nlp-lstm-420407/ch8-nlp-lstm', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/ch8-nlp-lstm-420407/ch8-nlp-lstm']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'ch8-nlp-lstm', '--image', 'gcr.io/ch8-nlp-lstm-420407/ch8-nlp-lstm', '--region', 'us-central1', '--platform', 'managed','--port','80']
+images:
+- gcr.io/ch8-nlp-lstm-420407/ch8-nlp-lstm
